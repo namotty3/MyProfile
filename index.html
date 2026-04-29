@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>なも a.k.a 那々 | Bassist & Music Staff</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&family=Great+Vibes&family=Yuji+Syuku&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg:          #05050f;
+            --surface:     #0d0d1e;
+            --surface2:    #151528;
+            --accent:      #00e5ff;
+            --accent2:     #7c3aed;
+            --accent-glow: rgba(0, 229, 255, 0.25);
+            --text:        #e2e8f0;
+            --muted:       #64748b;
+            --border:      rgba(255, 255, 255, 0.08);
+            --max-w:       1080px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            inset: 0 0 auto 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.1rem 2rem;
+            background: rgba(5, 5, 15, 0.82);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 900;
+            color: var(--accent);
+            text-decoration: none;
+            letter-spacing: 0.15em;
+        }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--accent); }
+
+        /* ── HERO ── */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding: 7rem 2rem 5rem;
+        }
+
+        /* slideshow background */
+        .hero-slides {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+        }
+        .hero-slide.active { opacity: 1; }
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* dark overlay over photos */
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background:
+                linear-gradient(to bottom, rgba(5,5,15,0.55) 0%, rgba(5,5,15,0.35) 50%, rgba(5,5,15,0.75) 100%);
+        }
+
+        /* grid lines on top */
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background-image:
+                linear-gradient(rgba(0, 229, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.025) 1px, transparent 1px);
+            background-size: 56px 56px;
+            pointer-events: none;
+        }
+
+        /* slide dots for hero */
+        .hero-dots {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+        .hero-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.35);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            padding: 0;
+        }
+        .hero-dot.active {
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+            transform: scale(1.3);
+        }
+
+
+        .hero-inner { position: relative; z-index: 5; }
+
+        .hero-label {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.35em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.2s forwards;
+        }
+        .hero-name {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(5rem, 16vw, 11rem);
+            font-weight: 400;
+            line-height: 1;
+            margin-bottom: 0.4rem;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 55%, var(--accent2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.35s forwards;
+        }
+        .hero-aka {
+            font-size: clamp(1.1rem, 3vw, 1.9rem);
+            font-weight: 300;
+            color: var(--muted);
+            margin-bottom: 1.8rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.5s forwards;
+        }
+        .hero-aka span {
+            font-family: 'Great Vibes', cursive;
+            color: var(--text);
+            font-weight: 400;
+            font-size: 1.4em;
+        }
+
+        .hero-tagline {
+            font-size: 0.95rem;
+            color: var(--muted);
+            max-width: 480px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.9;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.65s forwards;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.8s forwards;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.06em;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 22px var(--accent-glow);
+        }
+        .btn-primary:hover {
+            background: #fff;
+            box-shadow: 0 0 35px rgba(0, 229, 255, 0.45);
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* ── SHARED ── */
+        section { padding: 6rem 2rem; }
+        .container { max-width: var(--max-w); margin: 0 auto; }
+
+        .section-eyebrow {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.32em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+        }
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 900;
+            line-height: 1.15;
+        }
+        .divider {
+            width: 56px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            margin: 1rem 0 3rem;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .reveal.show { opacity: 1; transform: translateY(0); }
+
+        /* ── ABOUT ── */
+        #about {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .timeline { display: flex; flex-direction: column; }
+        .tl-item {
+            display: grid;
+            grid-template-columns: 90px 1fr;
+            gap: 2rem;
+            padding: 1.6rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .tl-item:last-child { border-bottom: none; }
+
+        .tl-year {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent);
+            padding-top: 0.15rem;
+        }
+        .tl-body { font-size: 0.93rem; color: var(--muted); }
+        .tl-body strong {
+            display: block;
+            color: var(--text);
+            font-size: 1rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .callout {
+            margin-top: 3rem;
+            padding: 1.4rem 1.8rem;
+            background: rgba(0, 229, 255, 0.04);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            border-left: 3px solid var(--accent);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            line-height: 1.85;
+            color: var(--muted);
+        }
+        .callout strong { color: var(--text); }
+
+        /* ── LINKS ── */
+        #links { background: var(--bg); }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+            gap: 1rem;
+        }
+
+        .link-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.15rem 1.4rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.22s;
+            position: relative;
+            overflow: hidden;
+        }
+        .link-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 50%, rgba(0,229,255,0.05));
+            opacity: 0;
+            transition: opacity 0.22s;
+        }
+        .link-card:hover {
+            border-color: rgba(0, 229, 255, 0.45);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45);
+        }
+        .link-card:hover::after { opacity: 1; }
+
+        .link-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .icon-x    { background: rgba(255,255,255,0.08); }
+        .icon-ig   { background: linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045); }
+        .icon-yt   { background: rgba(255,0,0,0.15); }
+        .icon-play { background: rgba(0,229,255,0.12); }
+
+        .link-info { flex: 1; min-width: 0; }
+        .link-name { font-weight: 700; font-size: 0.92rem; margin-bottom: 0.15rem; }
+        .link-sub  { font-size: 0.78rem; color: var(--muted); }
+        .link-arr  { color: var(--muted); transition: all 0.2s; flex-shrink: 0; }
+        .link-card:hover .link-arr { color: var(--accent); transform: translateX(4px); }
+
+        /* ── GEAR ── */
+        #gear { background: var(--bg); }
+
+        .gear-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .gear-card {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.22s;
+        }
+        .gear-card:hover {
+            border-color: rgba(0, 229, 255, 0.35);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
+        .gear-img {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: contain;
+            display: block;
+            background: var(--surface);
+            filter: brightness(0.9);
+            transition: filter 0.25s, transform 0.25s;
+        }
+        .gear-card:hover .gear-img {
+            filter: brightness(1);
+            transform: scale(1.02);
+        }
+        .gear-img-wrap {
+            overflow: hidden;
+            position: relative;
+        }
+        .gear-body {
+            padding: 1.2rem 1.4rem 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .gear-icon {
+            font-size: 1.6rem;
+            flex-shrink: 0;
+        }
+        .gear-info { flex: 1; min-width: 0; }
+        .gear-category {
+            font-size: 0.68rem;
+            letter-spacing: 0.22em;
+            color: var(--accent);
+            text-transform: uppercase;
+            font-family: 'Orbitron', monospace;
+            margin-bottom: 0.25rem;
+        }
+        .gear-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        /* ── SERVICES ── */
+        #services {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .svc-card {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.22s;
+        }
+        .svc-card:hover {
+            border-color: rgba(0, 229, 255, 0.28);
+            transform: translateY(-4px);
+            box-shadow: 0 14px 44px rgba(0, 0, 0, 0.5);
+        }
+
+        .svc-icon  { font-size: 2rem; margin-bottom: 0.9rem; }
+        .svc-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .price-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .price-row:last-child { border-bottom: none; }
+        .price-lbl { font-size: 0.88rem; color: var(--muted); }
+        .price-val { font-weight: 700; font-size: 0.95rem; color: var(--text); white-space: nowrap; }
+
+        .svc-note {
+            margin-top: 1.4rem;
+            padding: 0.8rem 1rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 6px;
+            font-size: 0.78rem;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+
+        /* ── VIDEO ── */
+        #video { background: var(--bg); }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .video-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            display: block;
+            text-decoration: none;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(0, 229, 255, 0.08);
+        }
+        .video-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: brightness(0.75);
+        }
+        .video-wrap:hover img {
+            transform: scale(1.03);
+            filter: brightness(0.55);
+        }
+        .video-play {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .video-play-btn {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(0, 229, 255, 0.15);
+            border: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--accent);
+            transition: all 0.2s;
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.3);
+        }
+        .video-wrap:hover .video-play-btn {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 50px rgba(0, 229, 255, 0.6);
+            transform: scale(1.1);
+        }
+        .video-label {
+            font-size: 0.82rem;
+            letter-spacing: 0.15em;
+            color: var(--text);
+            font-family: 'Orbitron', monospace;
+        }
+        .video-title-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.75rem 1.2rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+            text-align: left;
+        }
+        .video-title-text {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.02em;
+        }
+
+
+        .contact-note {
+            margin-top: 3rem;
+            padding: 1.4rem 2rem;
+            background: rgba(0, 229, 255, 0.04);
+            border: 1px solid rgba(0, 229, 255, 0.18);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--muted);
+        }
+        .contact-note strong { color: var(--accent); }
+
+        /* ── MUSIC ── */
+        #music {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .music-platform-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.65rem 1.4rem;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.88rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            transition: all 0.2s;
+            margin-bottom: 2rem;
+        }
+        .music-platform-btn:hover {
+            border-color: rgba(0, 229, 255, 0.45);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .music-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .music-list iframe {
+            border-radius: 12px;
+            display: block;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            padding: 4rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+        .footer-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--accent);
+            margin-bottom: 0.6rem;
+        }
+        .footer-logo .cursive {
+            font-family: 'Great Vibes', cursive;
+            font-weight: 400;
+            font-size: 1.5em;
+            vertical-align: middle;
+        }
+        .footer-copy { font-size: 0.78rem; color: var(--muted); }
+
+        /* ── MOBILE ── */
+        @media (max-width: 600px) {
+            nav { padding: 1rem 1.2rem; }
+            .nav-links { gap: 1.2rem; }
+            .tl-item { grid-template-columns: 72px 1fr; gap: 1rem; }
+            .services-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <a href="#hero" class="nav-logo">NAMO</a>
+    <ul class="nav-links">
+        <li><a href="#about">PROFILE</a></li>
+        <li><a href="#links">LINKS</a></li>
+        <li><a href="#gear">GEAR</a></li>
+        <li><a href="#services">SERVICES</a></li>
+        <li><a href="#music">MUSIC</a></li>
+        <li><a href="#video">VIDEO</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+    <!-- photo slideshow background -->
+    <div class="hero-slides">
+        <div class="hero-slide active">
+            <img src="photo/514EBB99-0A26-4349-9BCC-F00E4E8AC561.jpg" alt="photo 1" style="object-position: center 5%;">
+        </div>
+        <div class="hero-slide">
+            <img src="photo/S__25632788.jpg" alt="photo 2">
+        </div>
+        <div class="hero-slide">
+            <img src="photo/プロフ画.jpg" alt="photo 3">
+        </div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-grid"></div>
+
+    <!-- text content -->
+    <div class="hero-inner">
+        <p class="hero-label">Bassist &nbsp;/&nbsp; Music Staff</p>
+        <h1 class="hero-name">namo</h1>
+        <p class="hero-aka">a.k.a &nbsp;<span>Nana</span></p>
+        <p class="hero-tagline">
+            原曲に寄せた丁寧なコピーと、<br>
+            バンドサウンドになじむベースサウンドがウリ。<br>
+            多くの現場でスタッフ業などにも取り組み、<br>
+            誠実に「裏」も「表」もサポートさせていただきます。
+        </p>
+        <div class="hero-cta">
+            <a href="#services" class="btn btn-primary">各種ご依頼はこちら</a>
+            <a href="#links" class="btn btn-outline">SNS リンク</a>
+        </div>
+    </div>
+
+    <!-- slide indicator dots -->
+    <div class="hero-dots">
+        <button class="hero-dot active" aria-label="1枚目"></button>
+        <button class="hero-dot" aria-label="2枚目"></button>
+        <button class="hero-dot" aria-label="3枚目"></button>
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+    <div class="container">
+        <p class="section-eyebrow">Profile</p>
+        <h2 class="section-title">ABOUT ME</h2>
+        <div class="divider"></div>
+
+        <div class="timeline reveal">
+            <div class="tl-item">
+                <div class="tl-year">16歳</div>
+                <div class="tl-body">
+                    <strong>エレクトリックベースとの出会い</strong>
+                    高校1年生で軽音部に入部。エレクトリックベースを触り始める。
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-year">大学</div>
+                <div class="tl-body">
+                    <strong>軽音部でのコピー活動</strong>
+                    大学軽音部でコピー活動を継続し、演奏スキルと音楽的素養を磨く。
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-year">24歳</div>
+                <div class="tl-body">
+                    <strong>エンジニア × ミュージシャン × スタッフ</strong>
+                    ネットワーク・サーバ・クラウドエンジニアとして就職しながら、コピー・オリジナルバンド活動を継続。<br>
+                    マネージャー・スタッフとしてライブブッキング・スケジュール管理・ファンクラブ設営と運営・物販スタッフも行い、多岐にわたる現場経験を積む。
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-year">NOW</div>
+                <div class="tl-body">
+                    <strong>Re:mind &amp; 狂想ドッペル にて活動中</strong>
+                    スタッフ業・作曲・ベースサポートを中心に活動。オリジナルバンド「Re:mind」と「狂想ドッペル」のベーシストとして精力的に活動中。
+                </div>
+            </div>
+        </div>
+
+        <div class="callout reveal">
+            できる限り原曲に寄せたコピーと、<strong>バンドサウンドになじむベースサウンド</strong>がウリです。<br>
+            音楽制作・スタッフ業にも取り組み、誠実に「裏」も「表」も対応させていただきます。
+        </div>
+    </div>
+</section>
+
+
+
+<!-- LINKS -->
+<section id="links">
+    <div class="container">
+        <p class="section-eyebrow">Social Media</p>
+        <h2 class="section-title">LINKS</h2>
+        <div class="divider"></div>
+
+        <div class="links-grid reveal">
+
+            <a href="https://x.com/search?q=%23%E3%81%AA%E3%82%82%E3%83%A9%E3%82%A4%E3%83%96%E5%8B%95%E7%94%BB&src=hashtag_click"
+               target="_blank" rel="noopener" class="link-card">
+                <div class="link-icon icon-play">🎬</div>
+                <div class="link-info">
+                    <div class="link-name">ライブ演奏動画集</div>
+                    <div class="link-sub">#なもライブ動画</div>
+                </div>
+                <div class="link-arr">→</div>
+            </a>
+
+            <a href="https://x.com/namo_crisis3" target="_blank" rel="noopener" class="link-card">
+                <div class="link-icon icon-x">𝕏</div>
+                <div class="link-info">
+                    <div class="link-name">なも</div>
+                    <div class="link-sub">@namo_crisis3</div>
+                </div>
+                <div class="link-arr">→</div>
+            </a>
+
+            <a href="https://x.com/nana_bassist" target="_blank" rel="noopener" class="link-card">
+                <div class="link-icon icon-x">𝕏</div>
+                <div class="link-info">
+                    <div class="link-name">那々</div>
+                    <div class="link-sub">@nana_bassist</div>
+                </div>
+                <div class="link-arr">→</div>
+            </a>
+
+            <a href="https://www.instagram.com/nam_crisis52" target="_blank" rel="noopener" class="link-card">
+                <div class="link-icon icon-ig">📷</div>
+                <div class="link-info">
+                    <div class="link-name">Instagram</div>
+                    <div class="link-sub">@nam_crisis52</div>
+                </div>
+                <div class="link-arr">→</div>
+            </a>
+
+            <a href="https://x.com/kyoso_doppel" target="_blank" rel="noopener" class="link-card">
+                <div class="link-icon icon-x">𝕏</div>
+                <div class="link-info">
+                    <div class="link-name">狂想ドッペル</div>
+                    <div class="link-sub">@kyoso_doppel</div>
+                </div>
+                <div class="link-arr">→</div>
+            </a>
+
+            <a href="https://x.com/Re_mind_band" target="_blank" rel="noopener" class="link-card">
+                <div class="link-icon icon-x">𝕏</div>
+                <div class="link-info">
+                    <div class="link-name">Re:mind</div>
+                    <div class="link-sub">@Re_mind_band</div>
+                </div>
+                <div class="link-arr">→</div>
+            </a>
+
+            <a href="https://www.youtube.com/channel/UCodVcgWWncm7KRPa_jNqxZw"
+               target="_blank" rel="noopener" class="link-card">
+                <div class="link-icon icon-yt">▶</div>
+                <div class="link-info">
+                    <div class="link-name">狂想ドッペル YouTube</div>
+                    <div class="link-sub">YouTube Channel</div>
+                </div>
+                <div class="link-arr">→</div>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+<!-- GEAR -->
+<section id="gear">
+    <div class="container">
+        <p class="section-eyebrow">Equipment</p>
+        <h2 class="section-title">GEAR</h2>
+        <div class="divider"></div>
+
+        <div class="gear-grid reveal">
+
+            <div class="gear-card">
+                <div class="gear-img-wrap">
+                    <img src="gearphoto/moon.jpg" alt="moon JB-5A" class="gear-img">
+                </div>
+                <div class="gear-body">
+                    <div class="gear-icon">🎸</div>
+                    <div class="gear-info">
+                        <div class="gear-category">Bass Guitar</div>
+                        <div class="gear-name">moon JB-5A</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gear-card">
+                <div class="gear-img-wrap">
+                    <img src="gearphoto/sadowsky.jpg" alt="Sadowsky ML21 HP5 ASH" class="gear-img">
+                </div>
+                <div class="gear-body">
+                    <div class="gear-icon">🎸</div>
+                    <div class="gear-info">
+                        <div class="gear-category">Bass Guitar</div>
+                        <div class="gear-name">Sadowsky ML21 HP5 ASH</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+    <div class="container">
+        <p class="section-eyebrow">Work</p>
+        <h2 class="section-title">SERVICES</h2>
+        <div class="divider"></div>
+
+        <div class="services-grid">
+
+            <div class="svc-card reveal">
+                <div class="svc-icon">🎸</div>
+                <div class="svc-title">ベースサポート</div>
+                <ul class="price-list">
+                    <li class="price-row">
+                        <span class="price-lbl">ライブ時間 〜30分</span>
+                        <span class="price-val">¥5,000〜</span>
+                    </li>
+                    <li class="price-row">
+                        <span class="price-lbl">ライブ時間 30分以上</span>
+                        <span class="price-val">¥8,000〜</span>
+                    </li>
+                    <li class="price-row">
+                        <span class="price-lbl">3日以内の急募</span>
+                        <span class="price-val">+¥3,000</span>
+                    </li>
+                </ul>
+                <div class="svc-note">
+                    ※ 交通費・メイク費・スタジオ費用は別途ご負担ください。<br>
+                    3日以内のご依頼も対応可能です。詳細は各種要相談。
+                </div>
+            </div>
+
+            <div class="svc-card reveal">
+                <div class="svc-icon">🎪</div>
+                <div class="svc-title">ライブスタッフ業</div>
+                <ul class="price-list">
+                    <li class="price-row">
+                        <span class="price-lbl">〜6時間</span>
+                        <span class="price-val">¥6,000〜</span>
+                    </li>
+                    <li class="price-row">
+                        <span class="price-lbl">6〜9時間</span>
+                        <span class="price-val">¥9,000〜</span>
+                    </li>
+                    <li class="price-row">
+                        <span class="price-lbl">9時間以降</span>
+                        <span class="price-val">要相談</span>
+                    </li>
+                </ul>
+                <div class="svc-note">
+                    ブッキング・スケジュール管理・ファンクラブ運営・物販スタッフなど幅広く対応します。
+                </div>
+            </div>
+
+            <div class="svc-card reveal">
+                <div class="svc-icon">🛠️</div>
+                <div class="svc-title">その他クリエイティブ業務</div>
+                <div class="price-row" style="padding: 0.7rem 0 1.2rem;">
+                    <span class="price-lbl"></span>
+                    <span class="price-val" style="font-size: 1.4rem;">¥1,500/h</span>
+                </div>
+                <div class="svc-note">
+                    <strong style="color: var(--text); display: block; margin-bottom: 0.6rem;">対応可能業務</strong>
+                    ・グッズ作成<br>
+                    ・動画作成・編集<br>
+                    ・簡易的なフライヤー制作<br>
+                    など<br><br>
+                    ※ 作業受注前に見積を提示いたします。お気軽にご相談ください。
+                </div>
+            </div>
+
+        </div>
+
+        <div class="contact-note reveal">
+            <p style="margin-bottom:1.2rem;">お問い合わせは以下よりお気軽にどうぞ</p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.8rem;justify-content:center;">
+                <a href="https://x.com/namo_crisis3"
+                   target="_blank" rel="noopener"
+                   style="display:inline-flex;align-items:center;gap:0.55rem;padding:0.7rem 1.5rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:8px;text-decoration:none;color:var(--text);font-weight:700;font-size:0.9rem;transition:all 0.2s;"
+                   onmouseover="this.style.borderColor='rgba(0,229,255,0.5)';this.style.color='var(--accent)'"
+                   onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='var(--text)'">
+                    <span style="font-size:1.1rem;">𝕏</span> @namo_crisis3 へ DM
+                </a>
+                <a href="mailto:namochaa52@gmail.com"
+                   style="display:inline-flex;align-items:center;gap:0.55rem;padding:0.7rem 1.5rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:8px;text-decoration:none;color:var(--text);font-weight:700;font-size:0.9rem;transition:all 0.2s;"
+                   onmouseover="this.style.borderColor='rgba(0,229,255,0.5)';this.style.color='var(--accent)'"
+                   onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='var(--text)'">
+                    <span style="font-size:1.1rem;">✉</span> namochaa52@gmail.com
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MUSIC -->
+<section id="music">
+    <div class="container">
+        <p class="section-eyebrow">Streaming</p>
+        <h2 class="section-title">MUSIC</h2>
+        <div class="divider"></div>
+
+        <a href="https://www.tunecore.co.jp/artists/kyoso-doppel?lang=ja"
+           target="_blank" rel="noopener" class="music-platform-btn">
+            🎵 TuneCore Japan — 狂想ドッペル 配信ページ →
+        </a>
+
+        <div class="music-list reveal">
+            <iframe src="https://open.spotify.com/embed/album/4mwM6twxBDtXDr1yZcw6ZN?utm_source=generator&theme=0"
+                width="100%" height="152" frameborder="0"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"></iframe>
+            <iframe src="https://open.spotify.com/embed/album/0El3wcAiyD1XYY0AEc1VQi?utm_source=generator&theme=0"
+                width="100%" height="152" frameborder="0"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"></iframe>
+            <iframe src="https://open.spotify.com/embed/album/3k4SqtFhuXKq5OPW3JBYv8?utm_source=generator&theme=0"
+                width="100%" height="152" frameborder="0"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"></iframe>
+            <iframe src="https://open.spotify.com/embed/album/3JDXGnfxem1gULVMbyrqzG?utm_source=generator&theme=0"
+                width="100%" height="152" frameborder="0"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"></iframe>
+            <iframe src="https://open.spotify.com/embed/album/3wWIt352k8bvbNMwM4lSzv?utm_source=generator&theme=0"
+                width="100%" height="152" frameborder="0"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"></iframe>
+            <iframe src="https://open.spotify.com/embed/album/4dsVs7pimMdX9cKWNKmJ50?utm_source=generator&theme=0"
+                width="100%" height="152" frameborder="0"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"></iframe>
+        </div>
+    </div>
+</section>
+
+<!-- VIDEO -->
+<section id="video">
+    <div class="container">
+        <p class="section-eyebrow">Movie</p>
+        <h2 class="section-title">VIDEO</h2>
+        <div class="divider"></div>
+
+        <div class="video-grid reveal">
+
+            <a class="video-wrap"
+               href="https://youtu.be/gV86l97qQlE?si=4UwSBebDHrHTJQSe"
+               target="_blank" rel="noopener">
+                <img src="https://img.youtube.com/vi/gV86l97qQlE/maxresdefault.jpg" alt="水彩、北浜、午後11時">
+                <div class="video-play">
+                    <div class="video-play-btn">▶</div>
+                </div>
+                <div class="video-title-bar">
+                    <span class="video-title-text">【MV】狂想ドッペル -「水彩、北浜、午後11時」</span>
+                </div>
+            </a>
+
+            <a class="video-wrap"
+               href="https://youtu.be/WSrsSQOsuLc?si=VLx4dJTRmIBUte8C"
+               target="_blank" rel="noopener">
+                <img src="https://img.youtube.com/vi/WSrsSQOsuLc/maxresdefault.jpg" alt="メイデイ">
+                <div class="video-play">
+                    <div class="video-play-btn">▶</div>
+                </div>
+                <div class="video-title-bar">
+                    <span class="video-title-text">【MV】狂想ドッペル -「メイデイ」</span>
+                </div>
+            </a>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-logo">NAMO a.k.a <span class="cursive">Nana</span></div>
+    <p class="footer-copy">© 2026 namo a.k.a Nana. All rights reserved.</p>
+</footer>
+
+<script>
+    // Hero slideshow
+    (function () {
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots   = document.querySelectorAll('.hero-dot');
+        let current  = 0;
+        let timer;
+
+        function goTo(n) {
+            slides[current].classList.remove('active');
+            dots[current].classList.remove('active');
+            current = (n + slides.length) % slides.length;
+            slides[current].classList.add('active');
+            dots[current].classList.add('active');
+        }
+
+        function startTimer() {
+            clearInterval(timer);
+            timer = setInterval(() => goTo(current + 1), 5000);
+        }
+
+        dots.forEach((d, i) => d.addEventListener('click', () => { goTo(i); startTimer(); }));
+
+        startTimer();
+    })();
+
+    // Scroll reveal
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) e.target.classList.add('show');
+        });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
