@@ -306,16 +306,59 @@
 
         .callout {
             margin-top: 3rem;
-            padding: 1.4rem 1.8rem;
-            background: rgba(0, 229, 255, 0.04);
-            border: 1px solid rgba(0, 229, 255, 0.2);
-            border-left: 3px solid var(--accent);
-            border-radius: 6px;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.2rem;
+        }
+        .callout-icon {
+            flex-shrink: 0;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(0, 229, 255, 0.4);
+            box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+        }
+        .callout-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .callout-bubble {
+            position: relative;
+            padding: 1.2rem 1.6rem;
+            background: rgba(0, 229, 255, 0.05);
+            border: 1px solid rgba(0, 229, 255, 0.22);
+            border-radius: 12px;
             font-size: 0.95rem;
             line-height: 1.85;
             color: var(--muted);
         }
-        .callout strong { color: var(--text); }
+        .callout-bubble::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 20px;
+            border-width: 8px 10px 8px 0;
+            border-style: solid;
+            border-color: transparent rgba(0, 229, 255, 0.22) transparent transparent;
+        }
+        .callout-bubble::after {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 21px;
+            border-width: 7px 9px 7px 0;
+            border-style: solid;
+            border-color: transparent rgba(13, 13, 30, 0.95) transparent transparent;
+        }
+        .callout-bubble strong { color: var(--text); }
+
+        @media (max-width: 768px) {
+            .callout-icon { width: 52px; height: 52px; }
+            .callout-bubble { font-size: 0.88rem; }
+        }
 
         /* ── LINKS ── */
         #links { background: var(--bg); }
@@ -790,8 +833,13 @@
         </div>
 
         <div class="callout reveal">
-            できる限り原曲に寄せたコピーと、<strong>バンドサウンドになじむベースサウンド</strong>がウリです。<br>
-            音楽制作・スタッフ業にも取り組み、誠実に「裏」も「表」も対応させていただきます。
+            <div class="callout-icon">
+                <img src="icon/Na.png" alt="なも">
+            </div>
+            <div class="callout-bubble">
+                できる限り原曲に寄せたコピーと、<strong>バンドサウンドになじむベースサウンド</strong>がウリです。<br>
+                音楽制作・スタッフ業にも取り組み、誠実に「裏」も「表」も対応させていただきます。
+            </div>
         </div>
     </div>
 </section>
